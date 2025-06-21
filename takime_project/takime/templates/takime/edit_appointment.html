@@ -1,0 +1,64 @@
+{% extends 'takime/base.html' %}
+
+{% block title %}Edit Appointment{% endblock %}
+
+{% block content %}
+
+
+
+<div class="container py-5" style="max-width: 600px;">
+  <div class="card shadow rounded">
+    <div class="card-header bg-primary text-white">
+      <h3><i class="fas fa-edit me-2"></i>Edit Appointment</h3>
+    </div>
+    <div class="card-body">
+      <form method="POST" novalidate>
+        {% csrf_token %}
+        
+        <div class="mb-3">
+          {{ form.client.label_tag }}
+          {{ form.client }}
+          {% if form.client.errors %}
+            <div class="text-danger small">{{ form.client.errors }}</div>
+          {% endif %}
+        </div>
+        
+        <div class="mb-3">
+          {{ form.date.label_tag }}
+          {{ form.date }}
+          {% if form.date.errors %}
+            <div class="text-danger small">{{ form.date.errors }}</div>
+          {% endif %}
+        </div>
+        
+        <div class="mb-3">
+          {{ form.start_time.label_tag }}
+          {{ form.start_time }}
+          {% if form.start_time.errors %}
+            <div class="text-danger small">{{ form.start_time.errors }}</div>
+          {% endif %}
+        </div>
+        
+        <div class="mb-3">
+          {{ form.end_time.label_tag }}
+          {{ form.end_time }}
+          {% if form.end_time.errors %}
+            <div class="text-danger small">{{ form.end_time.errors }}</div>
+          {% endif %}
+        </div>
+        
+        <div class="mb-3">
+          {{ form.comment.label_tag }}
+          {{ form.comment }}
+          {% if form.comment.errors %}
+            <div class="text-danger small">{{ form.comment.errors }}</div>
+          {% endif %}
+        </div>
+        
+        <button type="submit" class="btn btn-success"><i class="fas fa-save me-1"></i> Update</button>
+        <a href="{% url 'appointment_list' %}" class="btn btn-secondary ms-2"><i class="fas fa-times me-1"></i> Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

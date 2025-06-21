@@ -1,0 +1,99 @@
+{% extends 'takime/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 900px;">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body p-4">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="border-radius: 10px;">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if appointments %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="text-white" style="background: linear-gradient(90deg, #2c3e50, #3498db);">
+                            <tr class="text-center">
+                                <th>Client</th>
+                                <th>Date</th>
+                                <th>Start - End</th>
+                                <th>Comment</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appointment in appointments %}
+                                <tr class="text-center">
+                                    <td>{{ appointment.client.first_name }} {{ appointment.client.last_name }}</td>
+                                    <td>{{ appointment.date }}</td>
+                                    <td>{{ appointment.start_time }} - {{ appointment.end_time }}</td>
+                                    <td>{{ appointment.comment|default:"-" }}</td>
+                                    <td>
+                                        <a href="{% url 'edit_appointment' appointment.id %}" class="btn btn-sm btn-outline-primary me-2" title="Edit">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a href="{% url 'delete_appointment' appointment.id %}" class="btn btn-sm btn-outline-danger" title="Delete" onclick="return confirm('Are you sure?');">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <nav aria-label="Page navigation example" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if appointments.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link text-primary" href="?search={{ search_query }}&page={{ appointments.previous_page_number }}" aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link text-muted">«</span>
+                            </li>
+                        {% endif %}
+
+                        {% for num in appointments.paginator.page_range %}
+                            {% if appointments.number == num %}
+                                <li class="page-item active">
+                                    <span class="page-link bg-primary text-white">{{ num }}</span>
+                                </li>
+                            {% elif num > appointments.number|add:'-3' and num < appointments.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link text-primary" href="?search={{ search_query }}&page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if appointments.has_next %}
+                            <li class="page-item">
+                                <a class="page-link text-primary" href="?search={{ search_query }}&page={{ appointments.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">»</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link text-muted">»</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No appointments found.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
