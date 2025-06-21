@@ -137,3 +137,24 @@ def send_reminder_notifications():
     for appointment in upcoming:
         # Here you would integrate an SMS/email API if you use one
         print(f"Reminder for {appointment.client} on {appointment.date} at {appointment.start_time}")
+
+
+from django.contrib.auth.views import LogoutView
+
+class CustomLogoutView(LogoutView):
+    next_page = 'login'
+
+    def dispatch(self, request, *args, **kwargs):
+        messages.success(request, "You have successfully logged out.")
+        return super().dispatch(request, *args, **kwargs)
+    
+
+from django.contrib.auth.views import LoginView
+from django.contrib import messages
+
+class CustomLoginView(LoginView):
+    template_name = 'takime/login.html'
+
+    def form_valid(self, form):
+        messages.success(self.request, f"Welcome back, {form.get_user().username}!")
+        return super().form_valid(form)
