@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Appointment Manager{% endblock %}</title>
-
+ 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome -->
@@ -33,23 +33,52 @@
         }
         .btn-modern {
             background: linear-gradient(45deg, #3498db, #2ecc71);
-            color: #fff;
+            color: #fff !important;
             border: none;
             padding: 8px 16px;
             border-radius: 8px;
             transition: transform 0.2s, box-shadow 0.2s;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 6px;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 500;
             text-decoration: none;
         }
         .btn-modern:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
             color: #fff !important;
-            text-decoration: none;
+        }
+        /* Rrit hapësirën midis butonave në navbar */
+        .navbar-nav.me-auto.d-flex.align-items-center {
+            gap: 32px; /* rritet hapësira */
+        }
+        /* Style for search input inside btn-modern container */
+        .search-form {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .search-form input[type="search"] {
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px 0 0 20px;
+            outline: none;
+            width: 180px;
+        }
+        .search-form button {
+            border: none;
+            background: #2ecc71;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 0 20px 20px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .search-form button:hover {
+            background: #27ae60;
         }
     </style>
 </head>
@@ -57,35 +86,36 @@
 
 <nav class="navbar navbar-expand-lg">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="{% url 'appointment_list' %}">
-      <i class="fas fa-calendar-alt"></i> Appointments
-    </a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-
-      <div class="d-flex gap-2 me-3 ms-auto">
+      <ul class="navbar-nav me-auto d-flex align-items-center">
         {% if user.is_authenticated %}
-          <a href="{% url 'add_appointment' %}" class="btn btn-modern">
-            <i class="bi bi-plus-circle"></i> Add Appointment
-          </a>
-          <a href="{% url 'appointment_list' %}" class="btn btn-modern">
-            <i class="bi bi-list-ul"></i> Appointment List
-          </a>
-          <a href="{% url 'add_client' %}" class="btn btn-modern">
-            <i class="bi bi-person-plus"></i> Add Client
-          </a>
+          <li>
+            <a href="{% url 'add_appointment' %}" class="btn btn-modern">
+              <i class="fas fa-plus-circle"></i> Add Appointment
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'add_client' %}" class="btn btn-modern">
+              <i class="bi bi-person-plus"></i> Add Client
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'appointment_list' %}" class="btn btn-modern">
+              <i class="fas fa-list-ul"></i> Appointment List
+            </a>
+          </li>
         {% endif %}
-      </div>
+      </ul>
 
-      <form class="d-flex ms-3" method="get" action="{% url 'appointment_list' %}">
-        <input class="form-control me-2" type="search" placeholder="Search clients..." aria-label="Search" name="search" value="{{ search_query|default:'' }}" style="border-radius: 20px;">
-        <button class="btn btn-outline-light" type="submit">
-          <i class="bi bi-search"></i>
-        </button>
+      <form class="search-form ms-auto" method="get" action="{% url 'appointment_list' %}">
+        <input type="search" placeholder="Search clients..." aria-label="Search" name="search" value="{{ search_query|default:'' }}">
+        <button type="submit"><i class="bi bi-search"></i></button>
       </form>
 
       <ul class="navbar-nav ms-auto">
@@ -96,7 +126,7 @@
           <li class="nav-item">
             <form method="post" action="{% url 'logout' %}">
               {% csrf_token %}
-              <button type="submit" class="btn btn-link nav-link text-white" style="display: inline; padding: 0; border: none; background: none;">
+              <button type="submit" class="btn btn-link nav-link text-white p-0" style="display: inline; border: none; background: none;">
                 <i class="fas fa-sign-out-alt"></i> Logout
               </button>
             </form>
