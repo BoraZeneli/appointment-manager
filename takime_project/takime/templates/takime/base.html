@@ -38,10 +38,18 @@
             padding: 8px 16px;
             border-radius: 8px;
             transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
         }
         .btn-modern:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+            color: #fff !important;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -58,35 +66,27 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto">
-        {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'add_appointment' %}">
-            <i class="fas fa-plus-circle"></i> Add Appointment
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'appointment_list' %}">
-            <i class="fas fa-list-ul"></i> Appointment List
-          </a>
-        </li>
-        {% endif %}
-      </ul>
 
-      <form class="d-flex ms-auto me-3" method="get" action="{% url 'appointment_list' %}">
+      <div class="d-flex gap-2 me-3 ms-auto">
+        {% if user.is_authenticated %}
+          <a href="{% url 'add_appointment' %}" class="btn btn-modern">
+            <i class="bi bi-plus-circle"></i> Add Appointment
+          </a>
+          <a href="{% url 'appointment_list' %}" class="btn btn-modern">
+            <i class="bi bi-list-ul"></i> Appointment List
+          </a>
+          <a href="{% url 'add_client' %}" class="btn btn-modern">
+            <i class="bi bi-person-plus"></i> Add Client
+          </a>
+        {% endif %}
+      </div>
+
+      <form class="d-flex ms-3" method="get" action="{% url 'appointment_list' %}">
         <input class="form-control me-2" type="search" placeholder="Search clients..." aria-label="Search" name="search" value="{{ search_query|default:'' }}" style="border-radius: 20px;">
         <button class="btn btn-outline-light" type="submit">
           <i class="bi bi-search"></i>
         </button>
       </form>
-      <div class="d-flex gap-2">
-        <a href="{% url 'add_appointment' %}" class="btn btn-modern">
-          <i class="bi bi-plus-circle"></i> Appointment
-        </a>
-        <a href="{% url 'add_client' %}" class="btn btn-modern">
-          <i class="bi bi-person-plus"></i> Client
-        </a>
-      </div>
 
       <ul class="navbar-nav ms-auto">
         {% if user.is_authenticated %}
