@@ -20,4 +20,3 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"{self.client} - {self.date} ({self.start_time} - {self.end_time})"
-

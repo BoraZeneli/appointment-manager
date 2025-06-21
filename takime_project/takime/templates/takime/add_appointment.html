@@ -80,6 +80,17 @@
                 {% endfor %}
             {% endif %}
 
+            {# Display non-field errors (like overlapping appointments) #}
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
             <form method="post" onsubmit="return validateForm()">
                 {% csrf_token %}
 
@@ -90,26 +101,31 @@
                         <a href="{% url 'add_client' %}" class="btn btn-sm btn-outline-primary">+ Add New Client</a>
                     </div>
                     {{ form.client }}
+                    {{ form.client.errors }}
                 </div>
 
                 <div class="mb-3">
                     <label for="id_date" class="form-label">Date</label>
                     {{ form.date }}
+                    {{ form.date.errors }}
                 </div>
 
                 <div class="mb-3">
                     <label for="id_start_time" class="form-label">Start Time</label>
                     {{ form.start_time }}
+                    {{ form.start_time.errors }}
                 </div>
 
                 <div class="mb-3">
                     <label for="id_end_time" class="form-label">End Time</label>
                     {{ form.end_time }}
+                    {{ form.end_time.errors }}
                 </div>
 
                 <div class="mb-3">
                     <label for="id_comment" class="form-label">Comment</label>
                     {{ form.comment }}
+                    {{ form.comment.errors }}
                 </div>
 
                 <div class="d-grid mt-4">
@@ -168,3 +184,5 @@
         return true;
     }
 </script>
+</body>
+</html>

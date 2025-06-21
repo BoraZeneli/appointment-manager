@@ -4,14 +4,24 @@
 
 {% block content %}
 
-
-
 <div class="container py-5" style="max-width: 600px;">
   <div class="card shadow rounded">
     <div class="card-header bg-primary text-white">
       <h3><i class="fas fa-edit me-2"></i>Edit Appointment</h3>
     </div>
     <div class="card-body">
+
+      {# Non-field errors (p.sh. mbivendosje) #}
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+          <ul class="mb-0">
+            {% for error in form.non_field_errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
       <form method="POST" novalidate>
         {% csrf_token %}
         
